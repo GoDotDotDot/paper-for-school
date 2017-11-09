@@ -15,8 +15,6 @@ export default (props) => {
   const {className} = props
   return (
     <Menu mode='horizontal' className={className}>
-      <Head>
-      </Head>
       <SubMenu
         title={
           <span className='avatar'>

@@ -2,7 +2,7 @@
  * @Author: 璟睿 / tiramisu18
  * @Date: 2017-10-11 14:57:55
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-06 15:06:23
+ * @Last Modified time: 2017-11-09 23:19:03
  */
 
 import React from 'react'
@@ -58,9 +58,21 @@ canvas{
   top: 0;
   width: 100%;
   height:70px;
-  background: url('../../../static/images/logo.png') 19% 20px no-repeat
+  h1{
+    display: inline-block;
+    margin-left: 50px;
+    img{
+      height: 70px;
+      vertical-align: middle;
+    }
+  }
 }
 `}</style>
+        <style jsx global>{`
+body{
+  overflow-x: hidden;
+}`}
+        </style>
         <Head>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
           <meta charSet='utf-8' />
@@ -70,7 +82,9 @@ canvas{
           />
         </Head>
         <div>
-          <div className='header' />
+          <div className='header'>
+            <h1><img src='././static/images/logo.png ' alt='' /></h1>
+          </div>
           <img className='fish_login' src='../static/images/fish_login.png' alt='小鱼哦' />
           <div className='login'>
             <LoginForm />

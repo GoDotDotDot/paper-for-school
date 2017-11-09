@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
-import scss from './styles/index.scss'
 import Head from 'next/head'
 import md_ajax from 'md_utils/md-service/md-ajax'
 import 'isomorphic-fetch'
@@ -38,9 +37,6 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form
     const prevent = (
       <div>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: scss }} />
-        </Head>
         <div className='logined-title'>快速登录</div>
         <div>
           <div className='user-border' />
@@ -53,11 +49,8 @@ class Login extends React.Component {
     )
     const newLogin = (
       <Form onSubmit={this.handleSubmit} className='login-form'>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: scss }} />
-        </Head>
         <div className='login-form-title'>
-          <span>循环水及水质在线监测系统</span>
+          <span>欢迎登录</span>
         </div>
         <FormItem>
           {getFieldDecorator('account', {
@@ -89,6 +82,81 @@ class Login extends React.Component {
     let loginContent = isLogined ? prevent : newLogin
     return (
       <div>
+        <style jsx global>{`
+        
+  #components-form-demo-normal-login .login-form-forgot {
+    float: right;
+  }
+  #components-form-demo-normal-login .login-form-button {
+    width: 100%;
+  }
+  
+  .login-form{
+      width: 330px;
+      margin: 22px;
+      padding-top:10px;
+      #userName,#password{
+        height:36px;
+        background:#f8f8f8;
+      }
+  }
+  .login-form-button{
+    display: -webkit-box;
+    font-size: 20px;
+    width: 330px; 
+    height:50px;
+  }
+  .login-form-title{
+    margin-bottom: 50px;
+    width: 330px;
+    text-align: center;
+    font-size: 20px;
+    color: #0591d9;
+    font-weight: 600;
+  }
+  .logined-title{
+    font-size: 20px;
+    color: #0591d9;
+    font-weight: 600;
+    text-align: center;
+    margin: 50px 0px;
+    padding-top:40px;
+  }
+  .user-border{
+    width:120px;
+    height: 120px;
+    border:1px solid #93cef7;
+    margin: auto;
+  }
+  .user-name{
+    width: 120px;
+    margin: auto;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .logined-button{
+    width: 200px;
+ 
+    margin: 50px auto ;
+  }
+  .button-login{
+    height:35px !important;
+    font-size: 14px !important;
+    width: 200px;
+  }
+  .ant-form-item{
+    margin-bottom:40px;
+  }
+  .ant-form-item:nth-child(3){
+    margin-bottom:22px;
+  }
+  .ant-checkbox-wrapper{
+    margin-bottom:36px; 
+  }`}
+        </style>
+        <Head>
+          <title>登录</title>
+        </Head>
         {loginContent}
       </div>
     )
