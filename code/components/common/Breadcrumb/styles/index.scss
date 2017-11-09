@@ -1,0 +1,18 @@
+/*
+ * @Author: 储奎 / GoDotDotDot 
+ * @Date: 2017-09-28 11:34:37 
+ * @Last Modified by: 璟睿 / tiramisu18
+ * @Last Modified time: 2017-10-19 15:39:15
+ */
+.breadcrumb-container{
+    height: 50px;
+    padding: 5px 0px;
+    line-height: 50px;
+    margin-bottom: 20px;
+    .ant-breadcrumb a {
+        padding-left:47px;
+        color:#119edb !important;
+        font-size: 14px;
+        font-weight: 500;
+    }        
+}

@@ -1,0 +1,32 @@
+/*
+ * @Author: 储奎 / GoDotDotDot 
+ * @Date: 2017-09-28 11:28:54 
+ * @Last Modified by: 储奎 / GoDotDotDot
+ * @Last Modified time: 2017-09-28 11:29:18
+ */
+
+.headerinfo {
+    float: right;
+    line-height: 64px;
+    height: 65px;
+}
+
+.avatar {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    line-height: 1;
+    border-radius: 500px;
+    white-space: nowrap;
+    font-weight: bold;
+    img {
+        border-radius: 100px;
+        width: 100%;
+        vertical-align: middle;
+    }
+}
+
+.ant-menu-submenu-horizontal>.ant-menu {
+    width: 120px;
+    left: -45px;
+}

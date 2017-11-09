@@ -1,0 +1,46 @@
+.ant-layout-has-sider{
+  .add-button {
+    width: 88px;
+    height: 28px;
+    background-color: #0599d9;
+    margin-bottom: 17px;
+    font-size: 14px;
+  }
+  .ant-table{
+    font-size: 14px;
+    color: #626161;
+  }
+  .ant-table-bordered .ant-table-body>table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table, .ant-table-bordered .ant-table-header>table{
+    border: 1px solid #d3d6dd;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .ant-table-bordered .ant-table-tbody>tr>td, .ant-table-bordered .ant-table-thead>tr>th{
+    border-right: 1px solid #d3d6dd;
+  }
+  .ant-table-bordered .ant-table-thead>tr>th{
+    border-bottom: 1px solid #d3d6dd;
+  }
+  .ant-table-thead>tr>th{
+    background: #fafafa;
+    color: #4c4c4c;
+  }
+  .ant-table-tbody>tr>td, .ant-table-thead>tr>th{
+    padding: 13px 27px;
+  }
+  .ant-table-tbody>tr>td {
+    border-bottom: 1px solid #d3d6dd;
+  }
+  .ant-table-tbody{
+    background-color: #fff;
+  }
+}
+.ant-input{
+  width: 85%;
+}
+.ant-modal-body{
+  padding: initial;
+  padding-left: 50px;
+  padding-top: 22px;
+}
+

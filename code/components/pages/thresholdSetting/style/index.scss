@@ -1,0 +1,80 @@
+.slider{
+  float: left;
+  max-width: 505px;
+  min-width: 200px;
+  .controlPanel{
+    max-width: 505px;
+    min-width: 322px;
+  }
+  .card-head{
+    position: relative;
+  }
+  .card-title{
+    font-size: 16px;
+    color: #0599d9;
+  }
+  .card-extra {
+    position: absolute;
+    right: 0px;
+    font-size: 14px;
+    color: #989898;
+  }
+  .card-input-border{
+    width: 50%;
+    margin: auto;
+    padding: 15px 0;
+    font-size: 14px;
+    color: #989898;
+  }
+  .card-input{
+    width: 68px;
+    height: 25px;
+    margin-left: 5px;
+    background-color: #f9f9f9;
+    color: #989898;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #c2c2c2;
+    border-radius: 2px;
+  }
+  .card-input-max{
+    margin-bottom: 20px;
+  }
+  .card-button-border{
+    margin-top: 20px;
+    float: right;
+  }
+  .card-button-border::after{
+    content:"";
+    display:none;
+    height:0;
+    clear:both;
+    zoom: 1;
+  }
+  .card-button{
+    width:68px;
+    height: 25px;
+    border-radius: 2px;
+    font-size: 14px;
+  }
+  .ant-btn-primary{
+    background-color: #0599d9;
+    border-color: #0599d9;
+    border: 1px;
+  }
+  .card-button-confirm{
+    margin-right: 8px;
+  }
+  .card-button-cancel{
+    background-color: #e5e5e5;
+    color:#818181;
+    border: 1px;
+  }
+}
+.slider::after{
+  content:"";
+  display:none;
+  height:0;
+  clear:both;
+  zoom: 1;
+}

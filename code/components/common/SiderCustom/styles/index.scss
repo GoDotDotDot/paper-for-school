@@ -1,0 +1,78 @@
+/*
+ * @Author: 储奎 / GoDotDotDot 
+ * @Date: 2017-09-28 11:17:14 
+ * @Last Modified by: 谢海龙 / Jamesxiehailong
+ * @Last Modified time: 2017-10-18 10:15:52
+ */
+
+.ant-layout-has-sider {
+
+    -ms-flex-direction: row;
+    flex-direction: row;
+    height: 100%;
+    .ant-layout-sider {
+        // background: #fff;
+        .ant-layout-sider-children {
+            flex: 0 0 200px;
+            max-width: 200px;
+            min-width: 200px;
+            width: 200px;
+        }
+    }
+    .ant-layout-sider-collapsed {
+        .ant-layout-sider-children {
+            flex: 0 0 64px;
+            max-width: 64px;
+            min-width: 64px;
+            width: 64px
+        }
+    }
+    .custom-trigger {
+        font-size: 18px;
+        line-height: 64px;
+        padding: 0 16px;
+        cursor: pointer;
+        -webkit-transition: color .3s;
+        -o-transition: color .3s;
+        transition: color .3s;
+    }
+    .logo {
+        height: 32px;
+        background: #333;
+        border-radius: 6px;
+        margin: 16px;
+    }
+    .link {
+        display: inline-block
+    }
+    .ant-menu-item {
+        text-overflow: initial !important;
+        span,
+        a {
+            display: inline-block;
+            width: 100%;
+        }
+        a {
+            color: #989898
+        }
+        &:hover a {
+            background-color: transparent;
+            color: #129edb;
+        }
+    }
+    .ant-layout-sider-collapsed {
+        .ant-menu-item {
+            text-overflow: ellipsis !important;
+            span,
+            a {
+                display: inline;
+            }
+        }
+    }
+     .ant-menu-item-selected {
+         a {
+             background-color: transparent;
+            color: #129edb;
+         }
+     }
+}
