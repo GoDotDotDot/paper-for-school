@@ -1,40 +1,40 @@
 {
-  "plugins": [
-    "transform-decorators-legacy",
-    [
-      "module-resolver",
-      {
-        "root": ["."],
-        "alias": {
-          "styles": "./public/styles",
-          "com_common": "./components/common",
-          "com_pages":"./components/pages",
-          "md_utils":"./components/utils",
-          "md_public":"./public/scripts"
-        },
-        "cwd": "babelrc"
-      }
-    ],
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "style": false
-      }
-    ]
-  ],
-  "presets": [
-    [
-      "next/babel",
-      {
-        "styled-jsx": {
-          "plugins": [
-            "styled-jsx-plugin-sass"
-          ]
+    "plugins": [
+      "transform-decorators-legacy",
+      [
+        "module-resolver",
+        {
+          "root": ["."],
+          "alias": {
+            "styles": "./public/styles",
+            "com_common": "./components/common",
+            "com_pages":"./components/pages",
+            "md_utils":"./public/utils",
+            "md_public":"./public"
+          },
+          "cwd": "babelrc"
         }
-      }
-    ]
-  ],
-  "ignore": []
-}
-
+      ],
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "style": false
+        }
+      ]
+    ],
+    "presets": [
+      [
+        "next/babel",
+        {
+          "styled-jsx": {
+            "plugins": [
+              "styled-jsx-plugin-sass"
+            ]
+          }
+        }
+      ]
+    ],
+    "ignore": []
+  }
+  
