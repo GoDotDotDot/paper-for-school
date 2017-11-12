@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot 
  * @Date: 2017-09-26 17:59:49 
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 16:59:24
+ * @Last Modified time: 2017-11-11 22:14:05
  */
 import Head from "next/head";
 import Link from "next/link";
@@ -36,19 +36,19 @@ const ROUTES = [
         ]
     },
     {
-        route: "/teachers/stumanger",
+        route: "/teachers/papermanager",
         title: "命题管理",
         child: [
             {
-                route: "/teachers/stumanger",
+                route: "/teachers/papermanager/mypaper",
                 title: "我的命题",
             },
             {
-                route: "/teachers/stumanger",
+                route: "/teachers/papermanager/addpaper",
                 title: "新增命题",
             },
             {
-                route: "/teachers/stumanger",
+                route: "/teachers/papermanager/currentpaper",
                 title: "当前选题",
             }
         ]
@@ -227,18 +227,17 @@ export default class CusLayout extends React.Component {
                     />
 
                 </Head>
-                <Header style={{ background: "#fff", padding: 0, width: "100%", position: 'fixed', zIndex: 101 }}>
+                <Header style={{ background: "#fff", padding: 0, width: "100%", position: 'fixed', zIndex: 101,boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)' }}>
                     <h1><img src="/static/images/logo.png" alt="" /></h1>
                     <h3>资源环境学院教务辅助系统</h3> 
                      <HeaderInfo className="headerinfo" />
                 </Header>
                 <Layout className="ant-layout-has-sider" style={{ width: "100%", height: "100%", position: 'absolute', paddingTop: '66px', overflow: 'hidden', background: '#f8f8f8' }}>
-                    <Sider  style={{ overflowY: 'auto', background: '#fff' }}>
+                    <Sider  style={{ overflowY: 'auto', background: '#fff',boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)'}}>
                     <MDSider data={ROUTES}></MDSider>
                     </Sider>
                     <Layout>
-                        <CusBreadcrumb pathname={pathname} />
-                        <Content style={{ margin: "0 47px", overflow: "initial" }}>
+                        <Content style={{ margin: "0", overflow: "initial" }}>
                             {this.props.children}
                         </Content>
                         <Footer style={{ textAlign: "center" }}>技术支持：GoDotDotDot</Footer>

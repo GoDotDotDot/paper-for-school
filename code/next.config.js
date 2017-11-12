@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-26 18:00:56
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-09 10:47:05
+ * @Last Modified time: 2017-11-11 21:31:05
  */
 
 const path = require('path')
@@ -22,6 +22,20 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['babel-loader', 'raw-loader', 'postcss-loader']
+      }
+    ,
+      {
+        test: /\.s(a|c)ss$/,
+        use: ['babel-loader', 'raw-loader', 'postcss-loader',
+          { loader: 'sass-loader',
+            options: {
+              includePaths: ['styles', 'node_modules']
+                .map((d) => path.join(__dirname, d))
+                .map((g) => glob.sync(g))
+                .reduce((a, c) => a.concat(c), [])
+            }
+          }
+        ]
       }
     )
     return config

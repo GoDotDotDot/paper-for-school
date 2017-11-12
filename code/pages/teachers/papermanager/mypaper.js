@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 20:08:06
+ * @Last Modified time: 2017-11-11 22:12:26
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -13,7 +13,7 @@ import Head from 'next/head'
 import {ctx} from 'md_public/scripts/golbalStatic'
 import mdAjax from 'md_utils/md-service/md-ajax'
 import Link from 'next/link'
-import WrappedNormalSearchForm from 'com_common/StuSearch'
+import WrappedNormalSearchForm from 'com_common/PaperSearch'
 const dataSource = [{
   key: '1',
   name: '胡彦斌',

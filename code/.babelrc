@@ -16,6 +16,18 @@
         }
       ],
       [
+        "inline-import",
+        {
+          "extensions": [".css"]
+        }
+      ],
+      [
+        "wrap-in-js",
+        {
+          "extensions": ["css$", "scss$"]
+        }
+      ],
+      [
         "import",
         {
           "libraryName": "antd",
