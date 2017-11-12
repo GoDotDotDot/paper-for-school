@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 22:12:26
+ * @Last Modified time: 2017-11-12 14:38:00
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -38,25 +38,64 @@ export default class Index extends React.Component {
     }
     this.columns = [
       {
-        title: '学号',
-        dataIndex: 'stuNum',
-        key: 'stuNum'
-      }, {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name'
+        title: '指导教师',
+        dataIndex: 'teacher',
+        key: 'teacher'
       }, {
         title: '性别',
         dataIndex: 'gender',
         key: 'gender'
       }, {
-        title: '班级',
-        dataIndex: 'class',
-        key: 'class'
+        title: '职称/学历',
+        dataIndex: 'professional',
+        key: 'professional'
       }, {
-        title: '年级',
-        dataIndex: 'grade',
-        key: 'grade'
+        title: '题目名称',
+        dataIndex: 'title',
+        key: 'title'
+      }, {
+        title: '题目来源',
+        dataIndex: 'from',
+        key: 'from'
+      }, {
+        title: '题目类型',
+        dataIndex: 'type',
+        key: 'type'
+      }, {
+        title: '社会实践',
+        dataIndex: 'hasAction',
+        key: 'hasAction'
+      }, {
+        title: '题目简介',
+        dataIndex: 'brief',
+        key: 'brief'
+      }, {
+        title: '题目要求',
+        dataIndex: 'require',
+        key: 'require'
+      }, {
+        title: '预期成果',
+        dataIndex: 'achieve',
+        key: 'achieve'
+      }, {
+        title: '与专业符合度',
+        dataIndex: 'conformity',
+        key: 'conformity'
+      }, {
+        title: '预计难易程度',
+        dataIndex: 'degree',
+        key: 'degree'
+      }, {
+        title: '预计工作量大小',
+        dataIndex: 'workload',
+        key: 'workload'
+      }, {
+        title: '操作',
+        dataIndex: 'operator',
+        key: 'operator',
+        render: (text, record) => {
+          return (<Button>编辑</Button>)
+        }
       }]
   }
   render () {
@@ -89,8 +128,7 @@ export default class Index extends React.Component {
         </div>
         <div className='result'>
           <div className='operator'>
-            <Button type='primary' disabled={dataSource.length === 0} style={{marginRight: 20}}>密码重置</Button>
-            <Button type='danger' disabled={dataSource.length === 0}>删除用户</Button>
+            <Button type='danger' disabled={dataSource.length === 0} style={{marginRight: 20}}>删除命题</Button>
           </div>
           <Table dataSource={dataSource} columns={this.columns} />
         </div>

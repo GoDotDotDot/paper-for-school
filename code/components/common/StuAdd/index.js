@@ -79,6 +79,14 @@ class NormalLoginForm extends React.Component {
                         <InputNumber placeholder='请输入学号'></InputNumber>
                         )}
                 </FormItem>,
+                 <FormItem key='6' label={'姓名'}  {...formItemLayout}>
+                 {getFieldDecorator('name', {
+                     rules: [{ required: true, message: '请输入姓名', type: 'string' }],
+                     initialValue: ''
+                 })(
+                     <Input placeholder="请输入姓名" />
+                     )}
+             </FormItem>,
                 <FormItem key='0' label={'年级'}  {...formItemLayout}>
                     {getFieldDecorator('grade', {
                         rules: [{ required: true, message: '请输入年级' },
