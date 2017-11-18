@@ -11,6 +11,7 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.formSubmit(values)
             }
         });
     }
@@ -32,11 +33,9 @@ class NormalLoginForm extends React.Component {
             <Form onSubmit={this.handleSubmit} className="login-form" layout='horizontal'>
                 <FormItem key='0' label={'年级'}  {...formItemLayout}>
                     {getFieldDecorator('grade', {
-                        rules: [
-                        { type: 'number', message: '年级必须为数字' }],
-                            initialValue:2017
+                        initialValue:''
                     })(
-                        <InputNumber placeholder='请输入年级'></InputNumber>
+                        <Input placeholder="请输入年级" />
                         )}
                 </FormItem>
                 <FormItem key='1' label={'专业'}  {...formItemLayout}>
@@ -55,7 +54,7 @@ class NormalLoginForm extends React.Component {
                 </FormItem>
                 <FormItem key='5' label={'题目名称'}  {...formItemLayout}>
                     {getFieldDecorator('title', {
-                      
+                        initialValue: ''                        
                     })(
                         <Input placeholder="请输入题目名称" />
                         )}

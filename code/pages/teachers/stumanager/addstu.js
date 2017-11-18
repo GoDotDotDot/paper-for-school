@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 22:01:30
+ * @Last Modified time: 2017-11-16 23:13:58
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -49,6 +49,15 @@ export default class Index extends React.Component {
         key: 'grade'
       }]
   }
+  onSubmitHandle = (values)=>{
+    console.log(values)
+    mdAjax.post(`${ctx}api/teachers/students/form`, values).then(rst => { 
+      message.success(`添加成功！`);
+      console.log(rst)      
+     }).catch(err => { 
+      message.error(`添加失败！`);      
+      })
+  }
   render () {
     const {pathname} = this.props
     const {dataSource} = this.state
@@ -82,7 +91,7 @@ export default class Index extends React.Component {
         <div className='search'>
           <span>请输入查询条件：</span>
           <div className='form'>
-            <WrappedNormalAddForm />
+            <WrappedNormalAddForm onSubmitHandle={this.onSubmitHandle} />
           </div>
         </div>
         <div className='result'>

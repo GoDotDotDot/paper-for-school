@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Checkbox, Radio, Select, InputNumber, Upload } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Radio, Select, InputNumber, Upload,message } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Option } = Select
@@ -12,6 +12,8 @@ class NormalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.onSubmitHandle(values)
+                this.props.form.resetFields()
             }
         });
     }
@@ -33,7 +35,7 @@ class NormalLoginForm extends React.Component {
             name: 'file',
             multiple: true,
             showUploadList: true,
-            action: '//jsonplaceholder.typicode.com/posts/',
+            action: 'http://127.0.0.1:3010/api/teachers/students/upload',
             onChange(info) {
               const status = info.file.status;
               if (status !== 'uploading') {
@@ -104,7 +106,7 @@ class NormalLoginForm extends React.Component {
                         )}
                 </FormItem>,
                  <FormItem key='3' label={'专业'}  {...formItemLayout}>
-                 {getFieldDecorator('class', {
+                 {getFieldDecorator('master', {
                      rules: [{ required: true, message: '请选择专业', type: 'string' }],
                      initialValue: ''
                  })(
@@ -114,11 +116,11 @@ class NormalLoginForm extends React.Component {
                 <FormItem key='2' label={'性别'}  {...formItemLayout}>
                     {getFieldDecorator('gender', {
                         rules: [{ required: true, message: '请选择性别' }],
-                        initialValue: 'male'
+                        initialValue: '男'
                     })(
                         <Select>
-                            <Option value="male">男</Option>
-                            <Option value="female">女</Option>
+                            <Option value="男">男</Option>
+                            <Option value="女">女</Option>
                         </Select>
                         )}
                 </FormItem>

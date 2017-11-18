@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Checkbox, Radio, Select, InputNumber, Upload } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Radio, Select, InputNumber, Upload,message } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Option } = Select
@@ -7,13 +7,16 @@ const CheckboxGroup = Checkbox.Group;
 const Dragger = Upload.Dragger;
 class NormalLoginForm extends React.Component {
     state = {
-        mode: 0
+        mode: 0,
+        paperFrom:null
     }
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.onSubmitHandle(values)
+                this.props.form.resetFields()
             }
         });
     }
@@ -21,9 +24,13 @@ class NormalLoginForm extends React.Component {
         const mode = e.target.value
         this.setState({ mode })
     }
+    formChangeHandle = (e) => {
+        const paperFrom = e.target.value
+        this.setState({ paperFrom })
+     }
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { mode } = this.state
+        const { mode, paperFrom } = this.state
         const plainOptions = ['Apple', 'Pear', 'Orange'];
         const formItemLayout = {
             labelCol: { span: 4 },
@@ -36,17 +43,21 @@ class NormalLoginForm extends React.Component {
             name: 'file',
             multiple: true,
             showUploadList: true,
-            action: '//jsonplaceholder.typicode.com/posts/',
-            onChange(info) {
-                const status = info.file.status;
-                if (status !== 'uploading') {
-                    console.log(info.file, info.fileList);
-                }
-                if (status === 'done') {
-                    message.success(`${info.file.name} file uploaded successfully.`);
-                } else if (status === 'error') {
-                    message.error(`${info.file.name} file upload failed.`);
-                }
+            // headers:{
+            //     'Content-Type':'multipart/form-data' 
+            // },
+            action: 'http://127.0.0.1:3010/api/teachers/paper/upload',
+            onChange:(info)=> {
+                // const status = info.file.status;
+                // if (status !== 'uploading') {
+                //     console.log(info.file, info.fileList);
+                // }
+                // if (status === 'done') {
+                    // message.success(`${info.file.name} file uploaded successfully.`);
+                    this.props.uploadHandle(info)
+                // } else if (status === 'error') {
+                //     message.error(`${info.file.name} file upload failed.`);
+                // }
             },
         };
 
@@ -101,16 +112,16 @@ class NormalLoginForm extends React.Component {
                     <FormItem key='3' label={'性别'}  {...formItemLayout}>
                         {getFieldDecorator('gender', {
                             rules: [{ required: true, message: '请选择性别' }],
-                            initialValue: 'male'
+                            initialValue: '男'
                         })(
                             <Select>
-                                <Option value="male">男</Option>
-                                <Option value="female">女</Option>
+                                <Option value="男">男</Option>
+                                <Option value="女">女</Option>
                             </Select>
                             )}
                     </FormItem>,
                     <FormItem key='4' label={'职称/学历'}  {...formItemLayout}>
-                        {getFieldDecorator('professional ', {
+                        {getFieldDecorator('professional', {
                             rules: [{ required: true, message: '请输入职称/学历' }],
                             initialValue: ''
                         })(
@@ -130,12 +141,32 @@ class NormalLoginForm extends React.Component {
                             rules: [{ required: true, message: '请选择勾选题目来源' }],
 
                         })(
-                            <RadioGroup >
+                            <RadioGroup onChange={this.formChangeHandle}>
                                 <Radio value={'科研项目'}>科研项目</Radio>
                                 <Radio value={'社会（行业）实践'}>社会（行业）实践</Radio>
+                                <Radio value={'教师自拟'}>教师自拟</Radio>
+                                <Radio value={'学生自拟'}>学生自拟</Radio>
                             </RadioGroup>
                             )}
-                    </FormItem>,
+                    </FormItem>])}
+                {
+                    paperFrom === '学生自拟' && ([<FormItem key='10' label={'学号'}  {...formItemLayout}>
+                        {getFieldDecorator('stuNum', {
+                            rules: [{ required: true, message: '请输入学号' }],
+
+                        })(
+                            <Input placeholder="请输入学生学号" />
+                            )}
+                    </FormItem>, <FormItem key='11' label={'学生姓名'}  {...formItemLayout}>
+                        {getFieldDecorator('stuName', {
+                            rules: [{ required: true, message: '请输入学生姓名' }],
+
+                        })(
+                            <Input placeholder="请输入学生姓名" />
+                            )}
+                    </FormItem>])
+                }
+                {mode === 1 && ([
                     <FormItem key='7' label={'题目类型'}  {...formItemLayout}>
                         {getFieldDecorator('type', {
                             rules: [{ required: true, message: '请勾选!' }],
@@ -160,6 +191,7 @@ class NormalLoginForm extends React.Component {
                     <FormItem key='9' label={'题目简介'}  {...formItemLayout}>
                         {getFieldDecorator('brief', {
                             rules: [{ required: true, message: '请输入简介' }],
+                            initialValue: '无'                            
                         })(
                             <TextArea rows={4} />
                             )}
@@ -167,21 +199,21 @@ class NormalLoginForm extends React.Component {
                     <FormItem key='10' label={'题目要求'}  {...formItemLayout}>
                         {getFieldDecorator('require', {
                             rules: [{ required: true, message: '请输入要求' }],
-                            initialValue: ''
+                            initialValue: '无'
                         })(
                             <TextArea rows={4} />
                             )}
                     </FormItem>,
                     <FormItem key='11' label={'预期成果'}  {...formItemLayout}>
-                        {getFieldDecorator('achieve ', {
+                        {getFieldDecorator('achieve', {
                             rules: [{ required: true, message: '请输入预期成果' }],
-                            initialValue: ''
+                            initialValue: '无'
                         })(
                             <TextArea rows={4} />
                             )}
                     </FormItem>,
                     <FormItem key='12' label={'与专业符合度'}  {...formItemLayout}>
-                        {getFieldDecorator(' conformity ', {
+                        {getFieldDecorator('conformity', {
                             rules: [{ required: true, message: '请勾选！' }],
                         })(
                             <RadioGroup >
@@ -215,11 +247,13 @@ class NormalLoginForm extends React.Component {
                     </FormItem>
                 ])}
 
-                <FormItem  {...buttonItemLayout}>
-                    <Button type="primary" htmlType="submit" style={{ marginTop: 20 }}>
-                        确定
-                    </Button>
-                </FormItem>
+               {
+                   mode === 1 &&<FormItem  {...buttonItemLayout}>
+                   <Button type="primary" htmlType="submit" style={{ marginTop: 20 }}>
+                       确定
+                   </Button>
+               </FormItem>
+               } 
             </Form>
         );
     }

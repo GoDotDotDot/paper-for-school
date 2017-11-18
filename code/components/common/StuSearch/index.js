@@ -53,31 +53,17 @@ class NormalLoginForm extends React.Component {
                      <FormItem key='0' label={'年级'}  {...formItemLayout}>
                      {getFieldDecorator('grade', {
                              rules: [{ required: true, message: 'Please input your username!' }],
-                             initialValue:'all'
+                             initialValue:''
                          })(
-                             <Select>
-                                 <Option value="all">全部</Option>
-                                 <Option value="2013">2013</Option>
-                                 <Option value="2014">2014</Option>
-                                 <Option value="2015">2015</Option>
-                                 <Option value="2016">2016</Option>
-                                 <Option value="2017">2017</Option>
-                             </Select>
+                            <Input placeholder="请输入年级" />
                          )}
                      </FormItem>,
                      <FormItem key='1' label={'班级'}  {...formItemLayout}>
                      {getFieldDecorator('class', {
                              rules: [{ required: true, message: 'Please input your username!' }],
-                             initialValue:'all'
+                             initialValue:''
                          })(
-                             <Select>
-                                 <Option value="all">全部</Option>
-                                 <Option value="2013">2013</Option>
-                                 <Option value="2014">2014</Option>
-                                 <Option value="2015">2015</Option>
-                                 <Option value="2016">2016</Option>
-                                 <Option value="2017">2017</Option>
-                             </Select>
+                            <Input placeholder="请输入班级" />
                          )}
                      </FormItem>,
                      <FormItem key='2' label={'性别'}  {...formItemLayout}>

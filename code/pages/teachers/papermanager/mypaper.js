@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-12 14:38:00
+ * @Last Modified time: 2017-11-18 16:09:08
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -34,7 +34,8 @@ export default class Index extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      dataSource: []
+      dataSource: [],
+      selectedRowKeys: []   
     }
     this.columns = [
       {
@@ -55,8 +56,8 @@ export default class Index extends React.Component {
         key: 'title'
       }, {
         title: '题目来源',
-        dataIndex: 'from',
-        key: 'from'
+        dataIndex: '_from',
+        key: '_from'
       }, {
         title: '题目类型',
         dataIndex: 'type',
@@ -65,19 +66,22 @@ export default class Index extends React.Component {
         title: '社会实践',
         dataIndex: 'hasAction',
         key: 'hasAction'
-      }, {
-        title: '题目简介',
-        dataIndex: 'brief',
-        key: 'brief'
-      }, {
-        title: '题目要求',
-        dataIndex: 'require',
-        key: 'require'
-      }, {
-        title: '预期成果',
-        dataIndex: 'achieve',
-        key: 'achieve'
-      }, {
+      },
+      //  {
+      //   title: '题目简介',
+      //   dataIndex: 'brief',
+      //   key: 'brief'
+      // }, 
+      // {
+      //   title: '题目要求',
+      //   dataIndex: '_require',
+      //   key: '_require'
+      // }, {
+      //   title: '预期成果',
+      //   dataIndex: 'achieve',
+      //   key: 'achieve'
+      // },
+       {
         title: '与专业符合度',
         dataIndex: 'conformity',
         key: 'conformity'
@@ -98,14 +102,46 @@ export default class Index extends React.Component {
         }
       }]
   }
+  onSelectChange = (selectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    this.setState({ selectedRowKeys });
+  }
+  formSubmit = (values)=>{
+    mdAjax.get(`${ctx}api/teachers/paper?grade=${values.grade}&master=${values.master}&teacher=${values.teacher}&title=${values.title}`)
+    .then(rst=>{
+      if(rst.success){
+        const dataSource = rst.data
+        // .map(ele=>{
+        //   ele.key = ele.id
+        //   return ele
+        // })
+        this.setState({dataSource})
+      }
+      console.log(rst)
+    })
+  }
+  deletePaperHandle= ()=>{
+    const id = this.state.selectedRowKeys
+    mdAjax.post(`${ctx}api/teachers/paper/delete`,{id})
+    .then(rst=>{
+      console.log(rst)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
   render () {
     const {pathname} = this.props
-    const {dataSource} = this.state
+    const {dataSource,selectedRowKeys} = this.state
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+      hideDefaultSelections: false,
+    };
     // const {sensor,warn,person} = this.state;
     return (
       <CusLayout className='ant-layout-has-sider' pathname={pathname}>
-        <style jsx>{`
-        .search{
+        <style jsx>{`.search{
           // height:100px;
           background:#fff;
           padding:20px
@@ -124,13 +160,13 @@ export default class Index extends React.Component {
       }</style>
         <div className='search'>
           <span>请输入查询条件：</span>
-          <WrappedNormalSearchForm />
+          <WrappedNormalSearchForm formSubmit={this.formSubmit}/>
         </div>
         <div className='result'>
           <div className='operator'>
-            <Button type='danger' disabled={dataSource.length === 0} style={{marginRight: 20}}>删除命题</Button>
+            <Button type='danger' disabled={selectedRowKeys.length === 0} style={{marginRight: 20}} onClick={this.deletePaperHandle}>删除命题</Button>
           </div>
-          <Table dataSource={dataSource} columns={this.columns} />
+          <Table rowSelection={rowSelection} dataSource={dataSource} columns={this.columns} rowKey={r=>r.id} size='small'/>
         </div>
       </CusLayout>
     )
