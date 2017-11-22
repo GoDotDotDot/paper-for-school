@@ -38,7 +38,7 @@ router.post('/paper/upload', (req, res) => {
 router.post('/paper/form', async(req, res) => {
   const {grade, master, teacher, gender, professional, title, from, type, hasAction, brief, require, achieve, conformity, degree, workload, stuNum, stuName} = req.body
   const sql1 = `INSERT INTO paper (grade,_master,teacher,gender,professional,title,_from,type,hasAction,brief,_require,achieve,conformity,degree,workload,stuNum,stuName)
-  VALUES (${grade},'${master}','${teacher}','${gender}','${professional}','${title}','${from}','${type}','${hasAction}','${brief}','${require}','${achieve}','${conformity}','${degree}','${workload}',${stuNum || 'NULL'},${stuName ? '"' + stuName + '"' : 'NULL'})`
+  VALUES (TRIM('${grade}'),TRIM('${master}'),TRIM('${teacher}'),TRIM('${gender}'),TRIM('${professional}'),TRIM('${title}'),TRIM('${from}'),TRIM('${type}'),TRIM('${hasAction}'),'${brief}','${require}','${achieve}',TRIM('${conformity}'),TRIM('${degree}'),'${workload}',${stuNum ? "TRIM('" + stuNum + "')" : 'NULL'}),${stuName ? 'TRIM("' + stuName + '")' : 'NULL'}`
   const sql2 = `INSERT INTO paper (grade,_master,teacher,gender,professional,title,_from,type,hasAction,brief,_require,achieve,conformity,degree,workload)
   VALUES (${grade},'${master}','${teacher}','${gender}','${professional}','${title}','${from}','${type}','${hasAction}','${brief}','${require}','${achieve}','${conformity}','${degree}','${workload}')`
   let sql
@@ -68,13 +68,80 @@ router.get('/paper', (req, res) => {
     res.status(500).json({success: false, message: err.message})
   })
 })
+router.get('/paper/byId', (req, res) => {
+  const {id} = req.query
+  const sql = `SELECT * FROM paper WHERE id = ${id}`
+  pool.queryPromise(sql)
+  .then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, data: rst.results})
+  })
+  .catch(err => {
+    res.status(500).json({success: false, message: err.message})
+  })
+})
 router.post('/paper/delete', (req, res) => {
   const {id} = req.body
   const sql = `UPDATE paper SET isDelete = 1 WHERE id in ( ${id.join(',')});`
   pool.queryPromise(sql)
   .then(rst => {
     console.log(rst)
-    res.status(200).json({success: true, data: rst.results})
+    res.status(200).json({success: true, message: '删除成功！'})
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({success: false, message: err.message})
+  })
+})
+
+router.post('/paper/update', async(req, res) => {
+  const {id, grade, _master, teacher, gender, professional, title, _from, type, hasAction, brief, _require, achieve, conformity, degree, workload, stuNum, stuName} = req.body
+  let sql
+  if (_from === '学生自拟') {
+    sql = `UPDATE paper SET 
+    grade = TRIM('${grade}'),
+     _master = TRIM('${_master}'),
+    teacher = TRIM('${teacher}'),
+    gender = TRIM('${gender}'),
+    professional = TRIM('${professional}'),
+    title = TRIM('${title}'),
+    _from = TRIM('${_from}'),
+    type = TRIM('${type}'),
+    hasAction = TRIM('${hasAction}'),
+    brief =  '${brief}',
+    _require = '${_require}',
+    achieve = '${achieve}',
+    conformity = TRIM('${conformity}'),
+    degree = TRIM('${degree}'),
+    workload = TRIM('${workload}'),
+    stuNum =  ${stuNum ? "TRIM('" + stuNum + "')" : 'NULL'}),
+    stuName = ${stuName ? "TRIM('" + stuName + "')" : 'NULL'})
+    WHERE id = ${id}`
+  } else {
+    sql = `UPDATE paper SET 
+    grade = TRIM('${grade}'),
+     _master = TRIM('${_master}'),
+    teacher = TRIM('${teacher}'),
+    gender = TRIM('${gender}'),
+    professional = TRIM('${professional}'),
+    title = TRIM('${title}'),
+    _from = TRIM('${_from}'),
+    type = TRIM('${type}'),
+    hasAction = TRIM('${hasAction}'),
+    brief =  '${brief}',
+    _require = '${_require}',
+    achieve = '${achieve}',
+    conformity = TRIM('${conformity}'),
+    degree = TRIM('${degree}'),
+    workload = TRIM('${workload}'),
+    stuNum =  'NULL',
+    stuName = 'NULL'
+    WHERE id = ${id}`
+  }
+  pool.queryPromise(sql)
+  .then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, message: '编辑成功！'})
   })
   .catch(err => {
     console.log(err)

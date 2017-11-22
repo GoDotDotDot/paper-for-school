@@ -42,7 +42,13 @@ const md_ajax = {
     return request('head', url, null, config)
   },
   post (url, data, config) {
-    return request('post', url, qs.stringify(data), config)
+    const _config = {
+      header: {
+        'Content-Type': 'application/json'
+      },
+      ...config
+    }
+    return request('post', url, JSON.stringify(data), _config)
   },
   put (url, data, config) {
     const _config = {header: {

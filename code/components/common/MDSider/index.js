@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link';
+import Link from 'next/link'
 import { Menu } from 'antd'
 const { SubMenu } = Menu
 let arr = []
@@ -8,8 +8,8 @@ export default class MDSider extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      // current: '0',
-      // openKeys: ['0', '0']
+      selectedKey:'',
+      openKeys: ''
     }
     this.handleClick = this.handleClick.bind(this)
     this.subMenuClick = this.subMenuClick.bind(this)
@@ -19,38 +19,56 @@ export default class MDSider extends React.Component {
   }
   handleClick (e) {
     console.log(e)
-    // this.setState({
-    //   openKeys: e.keyPath
-    // })
+
+  //   this.setState({
+  //     selectedKey: e.selectedKeys 
+  // });
     const onMenuClickHandle = this.props.onMenuClickHandle
     if (onMenuClickHandle) {
       onMenuClickHandle(e)
     }
   }
+  componentDidMount(){
+    this.setMenuOpen()
+  }
+  setMenuOpen = () => {
+    const path = window.location.pathname
+    const openKeys = path.substr(0, path.lastIndexOf('/'))
+    const selectedKey = path
+    this.setState({
+        openKeys,
+        selectedKey
+    });
+}
+openMenu = v => {
+  console.log(v);
+  this.setState({
+      openKeys: v[v.length - 1],
+  })
+}
   render () {
-    // let subIndex = 0
-    let menuIndex = 0
     const loop = (data) => {
       return data.map((item, index) => {
         if (item.child) {
           return (
-            <SubMenu key={`sub-${index + 1}`} title={item.title} onTitleClick={this.subMenuClick}>
+            <SubMenu key={item.route} title={item.title}>
               {loop(item.child)}
             </SubMenu >
           )
         }
-        menuIndex++
-        return <Menu.Item img_src={index} key={`menu-${menuIndex}-${index + 1}`} ><Link href={item.route}><a>{item.title}</a></Link> </Menu.Item>
+        return <Menu.Item img_src={index} key={item.route} ><Link href={item.route}><a>{item.title}</a></Link> </Menu.Item>
       })
     }
+    const {selectedKey,openKeys} = this.state
+    console.log(selectedKey,openKeys)
     return (
       <Menu
         mode='inline'
-        defaultOpenKeys={['sub-1']}
-        defaultSelectedKeys={['menu-1-1']}
-        // openKeys={this.state.openKeys}
+        openKeys={[openKeys]}
+        selectedKeys= {[selectedKey]}
         style={{ width: 'auto' }}
         onClick={this.handleClick}
+        onOpenChange={this.openMenu}
       >
         {loop(this.props.data)}
       </Menu>

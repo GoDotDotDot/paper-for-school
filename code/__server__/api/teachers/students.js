@@ -46,4 +46,60 @@ router.post('/students/form', async(req, res) => {
   })
   rst && res.send({ok: true})
 })
+
+router.get('/students', (req, res) => {
+  // const {grade, master, teacher, title} = req.query
+  const grade = req.query.grade || ''
+  const _class = req.query.class || ''
+  let gender = req.query.gender || ''
+  if (gender === 'all') gender = ''
+  const sql = `SELECT * FROM students where grade LIKE '%${grade}%' AND class LIKE '%${_class}%'
+  AND gender LIKE '%${gender}%' AND isDelete = 0`
+  // const sql = `SELECT teacher,gender,professional,title,_from,type,hasAction,brief,_require`
+  pool.queryPromise(sql).then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, data: rst.results})
+  }).catch(err => {
+    console.log(err)
+    res.status(500).json({success: false, message: err.message})
+  })
+})
+router.get('/students/byStuNum', (req, res) => {
+  const {stuNum} = req.query
+  const sql = `SELECT * FROM students WHERE stuNum = ${stuNum}`
+  pool.queryPromise(sql)
+  .then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, data: rst.results})
+  })
+  .catch(err => {
+    res.status(500).json({success: false, message: err.message})
+  })
+})
+router.post('/students/delete', (req, res) => {
+  const {id} = req.body
+  const sql = `UPDATE students SET isDelete = 1 WHERE id in ( ${id.join(',')});`
+  pool.queryPromise(sql)
+  .then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, message: '删除成功！'})
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({success: false, message: err.message})
+  })
+})
+router.post('/students/resetPsw', (req, res) => {
+  const {id} = req.body
+  const sql = `UPDATE students SET psw = NULL WHERE id = ${id};`
+  pool.queryPromise(sql)
+  .then(rst => {
+    console.log(rst)
+    res.status(200).json({success: true, message: '重置成功！'})
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({success: false, message: err.message})
+  })
+})
 module.exports = router

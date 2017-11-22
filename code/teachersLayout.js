@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot 
  * @Date: 2017-09-26 17:59:49 
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 22:14:05
+ * @Last Modified time: 2017-11-19 18:05:30
  */
 import Head from "next/head";
 import Link from "next/link";
@@ -46,13 +46,28 @@ const ROUTES = [
             {
                 route: "/teachers/papermanager/addpaper",
                 title: "新增命题",
-            },
-            {
-                route: "/teachers/papermanager/currentpaper",
-                title: "当前选题",
             }
+           
         ]
     },
+    {
+        route: "/teachers/actionmanager",
+        title: "选题管理",
+        child:[
+            {
+                route: "/teachers/actionmanager/publish",
+                title: "发布选题",
+            },
+            {
+                route: "/teachers/actionmanager/status",
+                title: "选题状态",
+            },
+            {
+                route: "/teachers/actionmanager/export",
+                title: "结果导出",
+            }
+        ]
+    }
 ];
 export default class CusLayout extends React.Component {
 
