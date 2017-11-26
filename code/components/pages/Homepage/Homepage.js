@@ -172,7 +172,7 @@ export default class HomePage extends React.Component {
         </style>
         {/* banner --开始-- */}
         <div style={{ width: '100%', height: '620px' }}>
-          <BannerAnim prefixCls='banner-user' autoPlay>
+          <BannerAnim prefixCls='banner-user' autoPlay arrow={false}>
             <Element prefixCls='banner-user-elem' key='0'>
               <BgElement key='bg' className='bg' />
               <TweenOne

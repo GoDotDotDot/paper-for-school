@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-26 17:59:49
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 16:28:59
+ * @Last Modified time: 2017-11-24 21:10:24
  */
 import Head from "next/head";
 import Link from "next/link";
@@ -18,42 +18,7 @@ const ROUTES = [
   {
     route: "/",
     title: "首页"
-  },
-  {
-    route: "/about",
-    title: "简介"
-  },
-  {
-    route: "/products",
-    title: "产品",
-    child: [
-      {
-        route: "/products/fish",
-        title: "鱼道监测系统"
-      },
-      {
-        route: "/products/elec",
-        title: "电赶拦鱼系统"
-      },
-      {
-        route: "/products/rececle",
-        title: "循环水质监测系统"
-      }
-    ]
-  },
-  {
-    route: "/porjects",
-    title: "项目"
-  },
-  {
-    route: "/news",
-    title: "新闻"
-  },
-  {
-    route: "/contacts",
-    title: "联系我们"
-  }
-];
+  }];
 const loop = (routes, isSub, pathname) => {
   const cls = isSub ? "sub-item" : "menu";
   return (
@@ -102,14 +67,15 @@ export default class CusLayout extends React.Component {
             body,
             #__next,
             .ant-layout {
-              background: #fff;
+              background: transparent;
             }
             .cus-header {
               margin: 0 auto;
               display: block;
-              height: 50px;
+              height: 76px;
               padding: 0 30px;
               position: relative;
+              font-family:'PingFang SC,Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;';
               .phone-nav-toggle {
                 display: none;
                 position: absolute;
@@ -123,7 +89,7 @@ export default class CusLayout extends React.Component {
               .logo,
               .nav {
                 display: block;
-                height: 50px;
+                height: 76px;
               }
               .logo {
                 left: 0;
@@ -132,15 +98,20 @@ export default class CusLayout extends React.Component {
                 position: absolute;
               }
               h1 {
-                height: 50px;
+                height: 76px;
+                color:#fff;
+                font-weight:100;
+                img{
+                  height:76px;
+                }
               }
               .menu {
                 display: inline-block;
                 position: relative;
-                background: #2f2e2e;
+                // background: #2f2e2e;
                 .item {
-                  line-height: 50px;
-                  height: 50px;
+                  line-height: 76px;
+                  height: 76px;
                   span {
                     font-size: 15px;
                   }
@@ -205,7 +176,7 @@ export default class CusLayout extends React.Component {
                     display: none;
                     border-radius: 0 0px 2px 2px;
                     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.35);
-                    background: #fff;
+                    // background: #fff;
                     .item:hover,
                     .active {
                       color: #fff;
@@ -320,18 +291,18 @@ export default class CusLayout extends React.Component {
         </Head>
         <Header
           style={{
-            background: "#2f2e2e",
+            background: "transparent",
+            position:'absolute',
             padding: 0,
             width: "100%",
-            height: "50px",
-            position: "fixed",
+            height: "76px",
             zIndex: 101
           }}
         >
           <header className="cus-header">
             <div className="logo">
               <h1>
-                <img src="/static/images/logo.png" alt="" />
+                资源环境学院
               </h1>
             </div>
             {/* <Button shape='circle' icon='bars' className='phone-nav-toggle' /> */}
@@ -353,7 +324,7 @@ export default class CusLayout extends React.Component {
             </nav>
           </header>
         </Header>
-        <Content style={{ padding: "50px 0", minHeight: "100vh" }}>
+        <Content style={{ padding: "0", minHeight: "100vh" }}>
           {this.props.children}
         </Content>
         <Footer className="foot">

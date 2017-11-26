@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-16 23:13:58
+ * @Last Modified time: 2017-11-25 16:49:53
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -94,17 +94,7 @@ export default class Index extends React.Component {
             <WrappedNormalAddForm onSubmitHandle={this.onSubmitHandle} />
           </div>
         </div>
-        <div className='result'>
-          <div className='operator'>
-            <Result
-              type='success'
-              title='上传成功'
-              description='您可以在下面的表格中查看上传成功的数据'
-              style={{ width: '100%' }}
-  />
-          </div>
-          <Table dataSource={dataSource} columns={this.columns} />
-        </div>
+
       </CusLayout>
     )
   }

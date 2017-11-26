@@ -6,52 +6,42 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
-const SSOAuth = async(req, res, next, route) => {
-  let status = 200
-  const data = await fetch(`http://cas.zzz.com/cas/auth?type=router&name=${route}&action=browse`, {
-    headers: {
-      Cookie: req.headers.cookie
-    },
-    credentials: 'same-origin'
-  })
-  .then(_res => {
-    status = _res.status // 200 404 401 500
-    if (status === 200) {
-      return _res.json()
-    } else if (status === 401) res.redirect('/login')
-    else {
-      throw Error(`CAS：${_res.statusText}`)
-    }
-  })
-  .then(json => json)
-  .catch((err) => {
-    res.redirect(`/error?code=${status}&m=${err.message}`)
-    return false
-  })
-  // if (data) {
-    // if (!data.status) {
-    //   const code = data.statusCode
-    //   if (code === 404) res.redirect(`/error?code=${code}&m=${data.message}`)
-    //   else if (code === 401) res.redirect('/login')
-    //   else res.redirect('/login')
-    // } else {
-    // app.render(req, res, route, req.query)
-    // }
- // }
-  data && app.render(req, res, route, {...req.query, stationId: data.stationId})
-}
 app.prepare()
-
 .then(() => {
   const server = express()
-  server.get('/deviceControl', async(req, res, next) => {
-    // SSOAuth(req, res, next, '/deviceControl')
-    // SSOAuth(req, res, next, '/deviceControl')
-    app.render(req, res, '/deviceControl', 'test')
+  // __server__ --start--
+  var http = require('http')
+  const serverIO = http.createServer(server)
+  const io = require('socket.io').listen(serverIO, {transports: ['polling', 'websocket']})
+  const stuWS = require('./__server__/ws/gisWS')
+  const bodyParser = require('body-parser')// 解析body字段模块
+  const session = require('express-session')
+  const MySQLStore = require('express-mysql-session')(session)
+  const dbconfig = require('./__server__/db.config')
+  const api = require('./__server__/api')
+
+  const sessionStore = new MySQLStore(dbconfig)
+  const sessionMiddleWare = session({
+    key: 'chukuiSessionId',
+    secret: 'cuitcuit',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
   })
-  server.get('/logs', async(req, res, next) => {
-    SSOAuth(req, res, next, '/logs')
+// __server --end--
+  server.use(sessionMiddleWare)
+  stuWS.selectPaper(io, sessionMiddleWare)
+  server.use(bodyParser.urlencoded({ extended: false }))
+  server.use(bodyParser.json()) // 调用bodyParser模块以便程序正确解析body传入值
+  server.use('*', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:3000')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With ')
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
+    res.header('Access-Control-Allow-Credentials', true)
+    next()
   })
+  server.use('/api', api)
+
   server.get('/login', async(req, res) => {
     app.render(req, res, '/login', req.query)
   })
@@ -60,7 +50,7 @@ app.prepare()
     return handle(req, res)
   })
 
-  server.listen(port, (err) => {
+  serverIO.listen(port, (err) => {
     if (err) throw err
     console.log(`> Ready on http://localhost:${port}`)
   })

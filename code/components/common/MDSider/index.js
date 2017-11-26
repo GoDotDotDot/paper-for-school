@@ -32,9 +32,11 @@ export default class MDSider extends React.Component {
     this.setMenuOpen()
   }
   setMenuOpen = () => {
+    // 为解决next.js路径后面加'/' bug
     const path = window.location.pathname
-    const openKeys = path.substr(0, path.lastIndexOf('/'))
-    const selectedKey = path
+    const len = path.length
+    const openKeys = path.substr(0, path.lastIndexOf('/',len-2))
+    const selectedKey = path.substr(0,len-1);
     this.setState({
         openKeys,
         selectedKey

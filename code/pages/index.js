@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-09 10:22:07
+ * @Last Modified time: 2017-11-24 20:55:21
  */
 
 import CusLayout from '../layout.js'
@@ -37,6 +37,7 @@ export default class Index extends React.Component {
           </Head>
           <Content>
             <HomePage />
+
           </Content>
         </Layout>
       </CusLayout>

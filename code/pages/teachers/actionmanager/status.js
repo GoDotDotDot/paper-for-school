@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-20 21:02:05
+ * @Last Modified time: 2017-11-25 15:07:57
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -154,7 +154,7 @@ export default class Index extends React.Component {
         </div>
         <div className='result'>
         <div className='operator'>
-            <Button type='danger' disabled={selectedRowKeys.length === 0} onClick={this.deleteStudentsHandle}>删除用户</Button>
+            <Button type='danger' disabled={selectedRowKeys.length === 0} onClick={this.deleteStudentsHandle}>删除选题</Button>
           </div>
         <Table rowSelection={rowSelection} dataSource={dataSource} columns={columns} rowKey={r=>r.id} size='small'/>
         </div>

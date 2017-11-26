@@ -3,14 +3,14 @@ const router = express.Router()
 const format = require('date-fns/format')
 var compareAsc = require('date-fns/compare_asc')
 const pool = require('../dbpool')
+
 // const gisWSNSP = require('../../model/students/index').getNSP()
 
-const getActionStatus = (nsp, socket, status) => {
+const getActionStatus = (nsp, userInfo, status) => {
   const now = Date.now()
-  const {session} = socket.request
-  const {grade, master} = session.userInfo
+  const {grade, master} = userInfo
   const sql = `SELECT a.id, a.startTime, a.endTime, a._master, a.grade,b.name FROM action a LEFT JOIN
-    teachers b ON a.createBy = b.id WHERE a.grade = ${pool.escape(grade)} AND a.isDelete = 0 LIMIT 1`
+    teachers b ON a.createBy = b.id WHERE a._master = ${pool.escape(master)} AND a.grade = ${pool.escape(grade)} AND a.isDelete = 0 LIMIT 1`
   return pool.queryPromise(sql)
     .then(rst => {
       const data = rst.results.map(ele => {
@@ -38,12 +38,11 @@ const getActionStatus = (nsp, socket, status) => {
       return {success: false, message: err.message}
     })
 }
-const getPaperList = (nsp, socket) => {
-  const {session} = socket.request
-  const {grade, master} = session.userInfo
+const getPaperList = (nsp, userInfo) => {
+  const {grade, master} = userInfo
   const sql = `SELECT * FROM paper where grade = '${grade}' AND _master='${master}' AND isDelete = 0`
   return pool.queryPromise(sql).then(rst => {
-    console.log(rst)
+    // console.log(rst)
     return {success: true, data: rst.results}
   }).catch(err => {
     console.log(err)
@@ -51,7 +50,20 @@ const getPaperList = (nsp, socket) => {
   })
 }
 
-const selectPaper = (nsp, socket, id) => {
+const selectPaper = async(nsp, socket, id) => {
+  const {session} = socket.request
+  const {account, name} = session.userInfo
+  const selfRst = await pool.queryPromise(`SELECT * FROM paper WHERE stuNum = ${pool.escape(account)}`)
+  .then(rst => {
+    const data = rst.results[0]
+    if (data) {
+      return ({success: false, message: `您已经选择了${data.teacher}老师的《${data.title}》，请勿重复选课！`})
+    }
+    return ({success: true, message: `允许选课`})
+  }).catch(err => {
+    return ({success: false, message: `查询出错！错误信息：${err.message}，请将该信息反馈给管理员！`})
+  })
+  if (!selfRst.success) { return selfRst }
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
@@ -79,15 +91,15 @@ const selectPaper = (nsp, socket, id) => {
             })
           }
             // 从session中获取学生学号
-          const {session} = socket.request
-          const {account, name} = session.userInfo
+          // const {session} = socket.request
+          // const {account, name} = session.userInfo
           const upSql = `UPDATE paper SET stuNum = ${connection.escape(account)},
             stuName = ${connection.escape(name)} WHERE id =${id}`
           connection.query(upSql, (err, rst) => {
             if (err) {
               reject({success: false, message: err.message})
             }
-            console.log(err)
+            // console.log(err)
             connection.commit(function (err) {
               if (err) {
                 return connection.rollback(function () {
@@ -97,7 +109,7 @@ const selectPaper = (nsp, socket, id) => {
               }
               resolve({success: true, message: '选择成功！'})
               nsp.emit('recivePaperList')
-              console.log('success!')
+              // console.log('success!')
             })
           })
         })
@@ -105,17 +117,76 @@ const selectPaper = (nsp, socket, id) => {
     })
   })
 }
-exports.getActionStatusWithWS = async(nsp, socket, status) => {
-  const rst = await getActionStatus(nsp, socket, status).then(dt => dt).catch(err => err)
+
+const unSelectPaper = async (nsp, socket, id) => {
+  try {
+    const {session} = socket.request
+    const {account} = session.userInfo
+    const querySql = `SELECT * FROM paper WHERE stuNum = ${pool.escape(account)}`
+    const rst = await pool.queryPromise(querySql).then(rst => {
+      const {results} = rst
+      if (results.length === 0) {
+        return {success: false, message: '您还没有选课'}
+      }
+      const {id} = results[0]
+      return {success: true, data: id}
+    }).catch(err => {
+      return {success: false, message: '发生了一点错误'}
+    })
+    if (!rst.success) {
+      return {success: false, message: rst.message}
+    }
+    const sql = `UPDATE paper SET stuNum = NULL,
+      stuName = NULL,
+      studentsId = NULL WHERE id = ${id}`
+    return pool.queryPromise(sql)
+    .then(rst => {
+      return {success: true, message: '退选成功'}
+    }).catch(err => {
+      return {success: false, message: '退选失败'}
+    })
+  } catch (err) {
+    return {success: false, message: '操作失败' + err.message}
+  }
+}
+// 全局、局部
+exports.unSelectPaperWithWS = async (nsp, socket, id) => {
+  const rst = await unSelectPaper(nsp, socket, id)
+  if (rst.success) {
+    const {session} = socket.request
+    if (!session) socket.disconnect(true)
+    else {
+      const {userInfo} = session
+      this.getPaperListWithWS(nsp, userInfo)
+    }
+  }
+  return rst
+}
+exports.queryPaperByStu = (stuNum, grade, master) => {
+  const sql = `SELECT title,teacher,id FROM paper WHERE stuNum=${pool.escape(stuNum)} AND grade=${pool.escape(grade)} AND _master=${pool.escape(master)}`
+  return pool.queryPromise(sql)
+  .then(rst => {
+    const {results} = rst
+    if (results.length > 0) {
+      return {success: true, data: results}
+    } else {
+      return {success: false, message: '您还没有选课！'}
+    }
+  })
+}
+// 全局 grade, master
+exports.getActionStatusWithWS = async(nsp, userInfo, status) => {
+  const rst = await getActionStatus(nsp, userInfo, status).then(dt => dt).catch(err => err)
   nsp.emit('receiveActionStatus', rst)
   return rst
 }
-
-exports.getPaperListWithWS = async (nsp, socket) => {
-  const rst = await getPaperList(nsp, socket).then(dt => dt).catch(err => err)
+// 全局 grade, master
+exports.getPaperListWithWS = async (nsp, userInfo) => {
+  const rst = await getPaperList(nsp, userInfo).then(dt => dt).catch(err => err)
   nsp.emit('receivePaperList', rst)
+  return rst
 }
-
+// 局部
 exports.selectPaperWithWS = async (nsp, socket, id) => {
   const rst = await selectPaper(nsp, socket, id).then(dt => dt).catch(err => err)
   return rst

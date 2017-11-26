@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-26 18:00:56
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 21:31:05
+ * @Last Modified time: 2017-11-25 16:30:09
  */
 
 const path = require('path')
@@ -40,9 +40,23 @@ module.exports = {
     )
     return config
   },
+  distDir: 'build',
   exportPathMap: function () {
     return {
-      '/login': { page: '/login' }
+      '/': {page: '/'},
+      '/login.html': { page: '/login' },
+      '/reset.html': { page: '/reset' },
+      '/students/index.html': {page: '/students/index'},
+      '/students/actionmanager/myselection.html': {page: '/students/actionmanager/myselection'},
+      '/students/actionmanager/select.html': {page: '/students/actionmanager/select'},
+      '/teachers/index.html': {page: '/teachers/index'},
+      '/teachers/actionmanager/publish.html': {page: '/teachers/actionmanager/publish'},
+      '/teachers/actionmanager/export.html': {page: '/teachers/actionmanager/export'},
+      '/teachers/actionmanager/status.html': {page: '/teachers/actionmanager/status'},
+      '/teachers/papermanager/addpaper.html': {page: '/teachers/papermanager/addpaper'},
+      '/teachers/papermanager/mypaper.html': {page: '/teachers/papermanager/mypaper'},
+      '/teachers/stumanager/addstu.html': {page: '/teachers/stumanager/addstu'},
+      '/teachers/stumanager/mystu.html': {page: '/teachers/stumanager/mystu'}
     }
   }
 }

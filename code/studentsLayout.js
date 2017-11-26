@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot 
  * @Date: 2017-09-26 17:59:49 
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-19 19:20:15
+ * @Last Modified time: 2017-11-26 18:24:15
  */
 import Head from "next/head";
 import Link from "next/link";
@@ -13,20 +13,20 @@ import HeaderInfo from "./components/common/HeaderInfo/HeaderInfo";
 import CusBreadcrumb from "./components/common/Breadcrumb/Breadcrumb";
 import flush from 'styled-jsx/server'
 import MDSider from 'com_common/MDSider'
-const { Content, Footer, Header,Sider } = Layout;
+const { Content, Footer, Header, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const ROUTES = [
     {
-        route:'/students/index',
-        title:'首页'
+        route: '/students/index',
+        title: '首页'
     },
     {
-     route: "/students/actionmanager",
+        route: "/students/actionmanager",
         title: "选题管理",
         child: [
             {
-                route: "/students/actionmanager/select",
+                route: "/students/actionmanager/myselection",
                 title: "我的选题",
             },
             {
@@ -43,12 +43,11 @@ export default class CusLayout extends React.Component {
             collapsed: !this.state.collapsed
         });
     };
+
     render() {
         const { pathname } = this.props;
-        return (
-            <Layout style={{ minHeight: "100%" }}>
-
-                <style jsx global>{`
+        return (<Layout style={{ minHeight: "100%" }}>
+            <style jsx global>{`
     .root,
     #__next,
     .custom_class {
@@ -200,32 +199,62 @@ export default class CusLayout extends React.Component {
         }
     } 
 `}</style>
-                <Head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <meta charSet="utf-8" />
-                    <link
-                        rel="stylesheet"
-                        href="//cdnjs.cloudflare.com/ajax/libs/antd/2.9.3/antd.min.css"
-                    />
+             <style jsx global>{`
+             .aboutme{
+                padding:10px;
+                font-size:14px
+             }
+                .aboutme-list{
+                    span{
+                        
+                    }
+                    .split{
+                        padding:5px 10px;
+                        
+                    }
+                }
+             `}
+            </style>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta charSet="utf-8" />
+                <link
+                    rel="stylesheet"
+                    href="//cdnjs.cloudflare.com/ajax/libs/antd/2.9.3/antd.min.css"
+                />
 
-                </Head>
-                <Header style={{ background: "#fff", padding: 0, width: "100%", position: 'fixed', zIndex: 101,boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)' }}>
-                    <h1><img src="/static/images/logo.png" alt="" /></h1>
-                    <h3>资源环境学院教务辅助系统</h3> 
-                     <HeaderInfo className="headerinfo" />
-                </Header>
-                <Layout className="ant-layout-has-sider" style={{ width: "100%", height: "100%", position: 'absolute', paddingTop: '66px', overflow: 'hidden', background: '#f8f8f8' }}>
-                    <Sider  style={{ overflowY: 'auto', background: '#fff',boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)'}}>
+            </Head>
+            <Header style={{ background: "#fff", padding: 0, width: "100%", position: 'fixed', zIndex: 101, boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)' }}>
+                <h1><img src="/static/images/logo.png" alt="" /></h1>
+                <h3>资源环境学院教务辅助系统</h3>
+                <HeaderInfo className="headerinfo"/>
+            </Header>
+            <Layout className="ant-layout-has-sider" style={{ width: "100%", height: "100%", position: 'absolute', paddingTop: '66px', overflow: 'hidden', background: '#f8f8f8' }}>
+                <Sider style={{ overflowY: 'auto', background: '#fff', boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)' }}>
                     <MDSider data={ROUTES}></MDSider>
-                    </Sider>
-                    <Layout>
-                        <Content style={{ margin: "0", overflow: "initial" }}>
-                            {this.props.children}
-                        </Content>
-                        <Footer style={{ textAlign: "center" }}>技术支持：GoDotDotDot</Footer>
-                    </Layout>
+                </Sider>
+                <Layout>
+                    <Content style={{ margin: "0", overflow: "initial" }}>
+                        {this.props.children}
+                    </Content>
+                    <Footer style={{ textAlign: "center" }}>
+                    <div className='aboutme'>关于我</div>
+                    <div className='aboutme-list'>
+                        <span><a target='_blank' href="https://github.com/GoDotDotDot">GitHub</a></span>
+                        <span className='split'>|</span>
+                        <span><a target='_blank' href="http://blog.godotdotdot.com/">博客</a></span>
+                        <span className='split'>|</span>
+                        <span><a target='_blank' href="https://www.weibo.com/godotdotdot">新浪微博</a></span>
+                        <span className='split'>|</span>
+                        <span><a href="javascript:void()">QQ：854025808</a></span>
+                    </div>
+                    <div className='aboutme'>
+                  储奎(GoDotDotDot)  All Rights Reserved
+                    </div>
+                    </Footer>
                 </Layout>
             </Layout>
+        </Layout>
         );
     }
 }

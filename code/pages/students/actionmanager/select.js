@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-22 23:17:37
+ * @Last Modified time: 2017-11-25 13:47:23
  */
 
 import CusLayout from '../../../studentsLayout.js'
@@ -127,6 +127,8 @@ const unStartColumns = [
 ]
 const PageHeaderLeft = (props) => {
   const { teacher, startTime, endTime, status } = props
+  console.log('server:',new Date(endTime))
+  console.log('client:',new Date())
   const formatCountDown = (time) => {
     const days = 24 * 60 * 60 * 1000
     const hours = 60 * 60 * 1000;
@@ -191,7 +193,7 @@ export default class Index extends React.Component {
     statusPanel: []
   }
   componentDidMount() {
-    const selectPaperIo = this.selectPaperIo = io('ws://127.0.0.1:3010/gis')
+    const selectPaperIo = this.selectPaperIo = io('/gis')
     selectPaperIo.on('receiveActionStatus', (rst) => {
       // 获取选课状态
       if (rst.success) {
@@ -231,10 +233,10 @@ export default class Index extends React.Component {
       }
     })
     selectPaperIo.on('connect', () => {
-      alert('connect')
+     message.success('连接服务器成功')
     });
     selectPaperIo.on('connect_error', (err) => {
-      console.log(err)
+     message.success('连接服务器失败')
     })
 
   }
@@ -299,11 +301,7 @@ export default class Index extends React.Component {
   render() {
     const { pathname } = this.props
     const { selectedRowKeys, statusPanel, dataSource } = this.state
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-      hideDefaultSelections: false,
-    };
+
     const COLUMNS = {
       '进行中': [...COL_BASIC,
         {
@@ -360,7 +358,7 @@ export default class Index extends React.Component {
               ></PageHeader>
             </div>
             <div className='result' key='dt1'>
-              <Table rowSelection={rowSelection} dataSource={dataSource} columns={COLUMNS[ele.status]} rowKey={r => r.id} size='small' />
+              <Table dataSource={dataSource} columns={COLUMNS[ele.status]} rowKey={r => r.id} size='small' />
             </div>
           </div>)
 

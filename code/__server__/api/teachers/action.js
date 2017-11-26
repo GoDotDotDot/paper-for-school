@@ -5,7 +5,7 @@ var compareAsc = require('date-fns/compare_asc')
 var schedule = require('node-schedule')
 var date = new Date(2012, 11, 21, 5, 30, 0)
 const students = require('../../model/students/index')
-const gisWSNSP = require('../../ws/gisWS').getNSP()
+const gisWS = require('../../ws/gisWS')
 const {pool} = require('../../model/paper')
 
 router.post('/action/publish', (req, res) => {
@@ -14,25 +14,35 @@ router.post('/action/publish', (req, res) => {
     res.status(500).json({success: false, message: '请检查表单'})
     return false
   }
+  console.log('客户端发送的时间：', req.body.startTime)
   let startTime = format(req.body.startTime, 'YYYY-MM-DD HH:mm:ss')
   let endTime = format(req.body.endTime, 'YYYY-MM-DD HH:mm:ss')
+  console.log('服务端解析的时间：', startTime)
+  const {id} = req.session.userInfo
+
   const authPaperSql = `SELECT * FROM paper WHERE grade = TRIM('${grade}') AND _master = TRIM('${_master}') AND isDelete = 0`
   pool.queryPromise(authPaperSql)
   .then(rst => {
     if (rst.results.length > 0) {
-      const sql = `INSERT INTO action (grade,_master,startTime,endTime)
-        VALUES (TRIM('${grade}'),TRIM('${_master}'),'${startTime}','${endTime}')`
+      const sql = `INSERT INTO action (grade,_master,startTime,endTime,createBy)
+        VALUES (TRIM('${grade}'),TRIM('${_master}'),'${startTime}','${endTime}',${id})`
       pool.queryPromise(sql)
         .then(rst => {
           res.status(200).json({success: true, message: '发布成功！'})
+          const gisWSNSP = gisWS.getNSP()
+          console.log(gisWSNSP)
+          const userInfo = {grade, master: _master}
           schedule.scheduleJob(new Date(startTime) - 10 * 60 * 1000, async () => {
             // 提前10分钟获取选课列表
-            students.getPaperListWithWS(gisWSNSP)
+            students.getPaperListWithWS(gisWSNSP, userInfo)
           })
+          // 2017-11-25 13:52:06
           schedule.scheduleJob(new Date(startTime) - 1000, async () => {
             // 开始抢课
-            const list = await students.getPaperListWithWS()
-            gisWSNSP.emit('actionStart', list)
+            // const list = await students.getActionStatusWithWS(gisWSNSP, userInfo, '进行中')
+            students.getActionStatusWithWS(gisWSNSP, userInfo, '进行中')
+            // gisWSNSP.emit('receiveActionStatus', list)
+            // receiveActionStatus
           })
           schedule.scheduleJob(new Date(endTime), async () => {
             gisWSNSP.emit('actionEnd')
@@ -83,11 +93,9 @@ router.post('/action/delete', (req, res) => {
   const sql = `UPDATE action SET isDelete = 1 WHERE id in ( ${id.join(',')});`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
     res.status(200).json({success: true, message: '删除成功！'})
   })
   .catch(err => {
-    console.log(err)
     res.status(500).json({success: false, message: err.message})
   })
 })

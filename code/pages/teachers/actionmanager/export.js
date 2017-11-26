@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-11 16:30:47
+ * @Last Modified time: 2017-11-24 22:15:01
  */
 
 import CusLayout from '../../../teachersLayout.js'
@@ -36,7 +36,7 @@ export default class Index extends React.Component {
             <meta charSet='utf-8' />
           </Head>
           <Content style={{padding: '0 94px'}}>
-            this is index
+            导出功能敬请期待
           </Content>
         </Layout>
       </CusLayout>
