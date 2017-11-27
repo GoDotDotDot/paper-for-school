@@ -29,7 +29,7 @@ class Login extends Component {
     this.props.form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         this.setState({ loginText: "正在登录..." });
-        console.log(values);
+        // console.log(values);
         axios
           .post(
             `/api/users/login`,{ ...values }

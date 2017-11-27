@@ -24,7 +24,7 @@ router.post('/students/upload', (req, res) => {
       res.status(500).send({ok: false})
       return false
     }
-    console.log(_req)
+    // console.log(_req)
     const xlsxPath = _req.file.path
     _req = null
     const sql = getSql(xlsxPath)
@@ -57,7 +57,7 @@ router.get('/students', (req, res) => {
   AND gender LIKE '%${gender}%' AND isDelete = 0`
   // const sql = `SELECT teacher,gender,professional,title,_from,type,hasAction,brief,_require`
   pool.queryPromise(sql).then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, data: rst.results})
   }).catch(err => {
     console.log(err)
@@ -69,7 +69,7 @@ router.get('/students/byStuNum', (req, res) => {
   const sql = `SELECT * FROM students WHERE stuNum = ${stuNum}`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, data: rst.results})
   })
   .catch(err => {
@@ -81,7 +81,7 @@ router.post('/students/delete', (req, res) => {
   const sql = `UPDATE students SET isDelete = 1 WHERE id in ( ${id.join(',')});`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, message: '删除成功！'})
   })
   .catch(err => {
@@ -94,7 +94,7 @@ router.post('/students/resetPsw', (req, res) => {
   const sql = `UPDATE students SET psw = NULL WHERE id = ${id};`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, message: '重置成功！'})
   })
   .catch(err => {

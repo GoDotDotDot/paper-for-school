@@ -24,11 +24,11 @@ router.post('/paper/upload', (req, res) => {
       res.status(500).send({ok: false})
       return false
     }
-    console.log(_req)
+    // console.log(_req)
     const xlsxPath = _req.file.path
     _req = null
     const rst = await importPaper(xlsxPath).then(rst => rst).catch(err => {
-      console.log(err)
+      // console.log(err)
       res.status(500).send({ok: false, message: '请检查excel表格是否有未填项目'})
     })
     // const workSheetsFromFile = xlsx.parse(xlsxPath)
@@ -45,7 +45,7 @@ router.post('/paper/form', async(req, res) => {
   if (from !== '学生自拟') sql = sql2
   else sql = sql1
   const rst = await importPaperFormForm(sql).then(rst => rst).catch(err => {
-    console.log(err)
+    // console.log(err)
     res.status(500).send({ok: false, message: '请检查excel表格是否有未填项目'})
   })
   rst && res.send({ok: true})
@@ -61,7 +61,7 @@ router.get('/paper', (req, res) => {
   AND teacher LIKE '%${teacher}%' AND title LIKE '%${title}%' AND isDelete = 0`
   // const sql = `SELECT teacher,gender,professional,title,_from,type,hasAction,brief,_require`
   pool.queryPromise(sql).then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, data: rst.results})
   }).catch(err => {
     console.log(err)
@@ -73,7 +73,7 @@ router.get('/paper/byId', (req, res) => {
   const sql = `SELECT * FROM paper WHERE id = ${id}`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, data: rst.results})
   })
   .catch(err => {
@@ -85,7 +85,7 @@ router.post('/paper/delete', (req, res) => {
   const sql = `UPDATE paper SET isDelete = 1 WHERE id in ( ${id.join(',')});`
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, message: '删除成功！'})
   })
   .catch(err => {
@@ -140,7 +140,7 @@ router.post('/paper/update', async(req, res) => {
   }
   pool.queryPromise(sql)
   .then(rst => {
-    console.log(rst)
+    // console.log(rst)
     res.status(200).json({success: true, message: '编辑成功！'})
   })
   .catch(err => {

@@ -64,7 +64,7 @@ exports.selectPaper = (io, sessionMiddleWare) => {
         students.getPaperListWithWS(nsp, userInfo)
       }
     } else {
-      console.log(nsp.connected)
+      // console.log(nsp.connected)
     }
   })
   nsp.on('recivePaperList', async (socket) => {

@@ -30,7 +30,7 @@ router.post('/action/publish', (req, res) => {
         .then(rst => {
           res.status(200).json({success: true, message: '发布成功！'})
           const gisWSNSP = gisWS.getNSP()
-          console.log(gisWSNSP)
+          // console.log(gisWSNSP)
           const userInfo = {grade, master: _master}
           schedule.scheduleJob(new Date(startTime) - 10 * 60 * 1000, async () => {
             // 提前10分钟获取选课列表
