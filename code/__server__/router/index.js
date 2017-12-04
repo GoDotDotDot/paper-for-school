@@ -8,10 +8,9 @@ const students = require('./students')
 const teachers = require('./teachers')
 const log4js = require('log4js')
 const auth = require('../auth')
-var logger = log4js.getLogger('school')
+var logger = log4js.getLogger('info')
 
 const renderPage = (res, page) => {
-  logger.info('访问' + page)
   res.set({
     'Content-Type': 'text/html'
   })
@@ -20,9 +19,11 @@ const renderPage = (res, page) => {
 router.use('/students', auth.studentsRouterAuth, students)
 router.use('/teachers', auth.teachersRouterAuth, teachers)
 router.get('/reset', (req, res) => {
+  logger.info('访问密码重置页面')
   renderPage(res, resetPage)
 })
 router.get('/login', (req, res) => {
+  logger.info('访问登录页面')
   renderPage(res, loginPage)
 })
 router.get('/', auth.sessionRouterAuth, (req, res) => {

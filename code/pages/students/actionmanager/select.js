@@ -2,7 +2,7 @@
  * @Author: 储奎 / GoDotDotDot
  * @Date: 2017-09-28 10:32:21
  * @Last Modified by: 储奎 / GoDotDotDot
- * @Last Modified time: 2017-11-25 13:47:23
+ * @Last Modified time: 2017-11-30 14:20:37
  */
 
 import CusLayout from '../../../studentsLayout.js'
@@ -176,9 +176,6 @@ const PageHeaderLeft = (props) => {
 const PageHeaderRight = (props) => {
   const { status } = props
   return (<div>
-    <style jsx>{`
-    
-    `}</style>
     <span className='ph-lable'>状态：{<Tag color={STATUS_COLOR[status]}>{status}</Tag>}</span>
 
   </div>)
@@ -325,45 +322,23 @@ export default class Index extends React.Component {
         }
       }]
     }
+    const ele = statusPanel[0]
     return (
       <CusLayout className='ant-layout-has-sider' pathname={pathname}>
-        <style jsx>{`
-          .search{
-            background:#fff;
-            padding:20px;
-            .form{
-              // width:400px;
-            }
-          }
-          .result{
-            padding:20px;
-            margin:20px;
-            background:#fff;
-            min-height:300px;
-            .operator{
-              margin:10px;
-              margin-left:0px
-            }
-          }
-      `
 
-        }</style>
-        {statusPanel.map((ele, index) => {
-          return (<div key={ele.id}>
-            <div className='search' key='dt0'>
-              <PageHeader
-                title={`${ele.grade}级${ele._master}专业论文选题`}
-                content={<PageHeaderLeft status={ele.status} teacher={ele.name} startTime={ele.startTime} endTime={ele.endTime} />}
-                extraContent={<PageHeaderRight status={ele.status} />}
-              ></PageHeader>
-            </div>
-            <div className='result' key='dt1'>
-              <Table dataSource={dataSource} columns={COLUMNS[ele.status]} rowKey={r => r.id} size='small' />
-            </div>
-          </div>)
-
-        })}
-
+{ele?<div key={ele.id}>
+<div  style={{background:'#fff',padding:20}}>
+  <PageHeader
+    title={`${ele.grade}级${ele._master}专业论文选题`}
+    content={<PageHeaderLeft status={ele.status} teacher={ele.name} startTime={ele.startTime} endTime={ele.endTime} />}
+    extraContent={<PageHeaderRight status={ele.status} />}
+  ></PageHeader>
+</div>
+<div  style={{padding:20,margin:20,background:'#fff',minHeight:300}}>
+  <Table dataSource={dataSource} columns={COLUMNS[ele.status]} rowKey={r => r.id} size='small' />
+</div>
+</div>:<div>暂无数据</div>}
+          
       </CusLayout>
     )
   }

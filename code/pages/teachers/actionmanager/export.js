@@ -26,10 +26,6 @@ export default class Index extends React.Component {
     // const {sensor,warn,person} = this.state;
     return (
       <CusLayout className='ant-layout-has-sider' pathname={pathname}>
-        <style jsx>{`
-      `
-
-      }</style>
         <Layout>
           <Head>
             <meta name='viewport' content='width=device-width, initial-scale=1' />

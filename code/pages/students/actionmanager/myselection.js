@@ -107,7 +107,6 @@ export default class Index extends React.Component {
             }
           }
       `
-
         }</style>
 
             <div className='search' key='dt0'>

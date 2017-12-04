@@ -1,4 +1,6 @@
 import { Form, Icon, Input, Button, Checkbox, Radio, Select, InputNumber, Upload,message } from 'antd';
+import { ctx } from 'md_public/scripts/golbalStatic'
+
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Option } = Select
@@ -46,7 +48,7 @@ class NormalLoginForm extends React.Component {
             // headers:{
             //     'Content-Type':'multipart/form-data' 
             // },
-            action: 'http://127.0.0.1:3010/api/teachers/paper/upload',
+            action: `${ctx}api/teachers/paper/upload`,
             onChange:(info)=> {
                 // const status = info.file.status;
                 // if (status !== 'uploading') {

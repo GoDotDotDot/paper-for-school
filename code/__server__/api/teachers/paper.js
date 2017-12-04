@@ -21,7 +21,7 @@ router.post('/paper/upload', (req, res) => {
   let _req = req
   upload(req, res, async(err) => {
     if (err) {
-      res.status(500).send({ok: false})
+      res.status(500).send({ok: false, message: err.message})
       return false
     }
     // console.log(_req)

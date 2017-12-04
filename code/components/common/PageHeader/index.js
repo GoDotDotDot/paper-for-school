@@ -8,7 +8,6 @@ export default (props) => {
       margin-bottom:10px;
     }
     `
-
     }
 
     </style>

@@ -61,7 +61,7 @@ router.post('/action/publish', (req, res) => {
 router.get('/action/status', (req, res) => {
   const now = Date.now()
   const sql = `SELECT a.id, a.startTime, a.endTime, a._master, a.grade,b.name FROM action a LEFT JOIN
-  teachers b ON a.createBy = b.id WHERE a.grade = '2013' AND a.isDelete = 0`
+  teachers b ON a.createBy = b.id WHERE a.isDelete = 0`
   pool.queryPromise(sql)
   .then(rst => {
     const data = rst.results.map(ele => {

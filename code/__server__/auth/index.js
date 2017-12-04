@@ -1,9 +1,12 @@
-
+//   logger.info('访问学生首页')
+const log4js = require('log4js')
+var logger = log4js.getLogger('info')
 const studentsRouterAuth = (req, res, next) => {
   const {userInfo} = req.session
   if (!userInfo || userInfo.role !== 1) {
     return res.redirect('/login')
   }
+  logger.info(`${userInfo.account}-${userInfo.name}访问${req.path}`)
   next()
 }
 const teachersRouterAuth = (req, res, next) => {
@@ -11,6 +14,7 @@ const teachersRouterAuth = (req, res, next) => {
   if (!userInfo || userInfo.role !== 2) {
     return res.redirect('/login')
   }
+  logger.info(`${userInfo.account}-${userInfo.name}访问${req.path}`)
   next()
 }
 const sessionRouterAuth = (req, res, next) => {
